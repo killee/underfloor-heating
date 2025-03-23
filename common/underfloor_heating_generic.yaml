@@ -1,0 +1,104 @@
+climate:
+  - platform: thermostat
+    id: room1_thermostat
+    name: ${room1} Temperaturregelung         # Thermostat control for room1
+    sensor: room1_temp                         # Uses temperature sensor for room1
+    <<: !include underfloor_heating_termostat.yaml  # Common thermostat settings
+    heat_action:
+      - switch.turn_on: room1_output           # Turn on heating valve for room1
+    idle_action:
+      - switch.turn_off: room1_output          # Turn off heating valve for room1
+
+  - platform: thermostat
+    id: room2_thermostat
+    name: ${room2} Temperaturregelung         # Thermostat control for room2
+    sensor: room2_temp                         # Uses temperature sensor for room2
+    <<: !include underfloor_heating_termostat.yaml
+    heat_action:
+      - switch.turn_on: room2_output           # Turn on heating valve for room2
+    idle_action:
+      - switch.turn_off: room2_output          # Turn off heating valve for room2
+
+  - platform: thermostat
+    id: room3_thermostat
+    name: ${room3} Temperaturregelung         # Thermostat control for room3
+    sensor: room3_temp                         # Uses temperature sensor for room3
+    <<: !include underfloor_heating_termostat.yaml
+    heat_action:
+      - switch.turn_on: room3_output           # Turn on heating valve for room3
+    idle_action:
+      - switch.turn_off: room3_output          # Turn off heating valve for room3
+
+  - platform: thermostat
+    id: room4_thermostat
+    name: ${room4} Temperaturregelung         # Thermostat control for room4
+    sensor: room4_temp                         # Uses temperature sensor for room4
+    <<: !include underfloor_heating_termostat.yaml
+    heat_action:
+      - switch.turn_on: room4_output           # Turn on heating valve for room4
+    idle_action:
+      - switch.turn_off: room4_output          # Turn off heating valve for room4
+
+  - platform: thermostat
+    id: room5_thermostat
+    name: ${room5} Temperaturregelung         # Thermostat control for room5
+    sensor: room5_temp                         # Uses temperature sensor for room5
+    <<: !include underfloor_heating_termostat.yaml
+    heat_action:
+      - switch.turn_on: room5_output           # Turn on heating valve for room5
+    idle_action:
+      - switch.turn_off: room5_output          # Turn off heating valve for room5
+
+  - platform: thermostat
+    id: room6_thermostat
+    name: ${room6} Temperaturregelung         # Thermostat control for room6
+    sensor: room6_temp                         # Uses temperature sensor for room6
+    <<: !include underfloor_heating_termostat.yaml
+    heat_action:
+      - switch.turn_on: room6_output           # Turn on heating valve for room6
+    idle_action:
+      - switch.turn_off: room6_output          # Turn off heating valve for room6
+
+  - platform: thermostat
+    id: room7_thermostat
+    name: ${room7} Temperaturregelung         # Thermostat control for room7
+    sensor: room7_temp                         # Uses temperature sensor for room7
+    <<: !include underfloor_heating_termostat.yaml
+    heat_action:
+      - switch.turn_on: room7_output           # Turn on heating valve for room7
+    idle_action:
+      - switch.turn_off: room7_output          # Turn off heating valve for room7
+
+switch:
+  - platform: gpio
+    pin: 12 #18
+    inverted: True
+    name: ${devicename} on                     # Main device power indicator/control
+  - platform: gpio
+    pin: 14 #25
+    id: room1_output
+    inverted: True                           # Controls heating valve for room1
+  - platform: gpio
+    pin: 27 #26
+    id: room2_output
+    inverted: True                           # Controls heating valve for room2
+  - platform: gpio
+    pin: 26 #27
+    id: room3_output
+    inverted: True                           # Controls heating valve for room3
+  - platform: gpio
+    pin: 25 #22
+    id: room4_output
+    inverted: True                           # Controls heating valve for room4
+  - platform: gpio
+    pin: 33 #21
+    id: room5_output
+    inverted: True                           # Controls heating valve for room5
+  - platform: gpio
+    pin: 32 #19
+    id: room6_output
+    inverted: True                           # Controls heating valve for room6
+  - platform: gpio
+    pin: 13 #17
+    id: room7_output
+    inverted: True                           # Controls heating valve for room7

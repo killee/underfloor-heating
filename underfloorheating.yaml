@@ -1,0 +1,89 @@
+substitutions:
+  devicename: Fussbodenheizung 1. Stock    # Friendly name for the underfloor heating unit
+  internalname: underfloorheating1           # Internal ESPHome project name
+  room1: Wohnzimmer Kille                   # Define room1 name (Living Room)
+  room2: Küche Esszimmer Kille               # Define room2 name (Kitchen/Dining)
+  room3: Bad 1. Stock  Kille                 # Define room3 name
+  room4: Flour 1. Stock  Kille               # Define room4 name
+  room5: Schlafzimmer  Kille                 # Define room5 name (Bedroom)
+  room6: Ankleide  Kille                     # Define room6 name (Dressing room)
+  room7: Bad Heizkörper  Kille               # Define room7 name (Bathroom Radiator)
+  
+esphome:
+  name: $internalname                        # Use internalname substitution for project name
+  
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+packages:
+  sensor_gen: !include common/sensor_generic.yaml   # Include common sensor settings
+  network: !include common/network_generic.yaml       # Include network and OTA settings
+  floor_gen: !include common/underfloor_heating_generic.yaml  # Include climate control and switch settings
+
+# Enable Home Assistant API with encryption (even though system works standalone)
+api:
+  encryption:
+    key: changeme       # Change this key to a secure value!
+
+one_wire:
+  - platform: gpio
+    pin: GPIO23         # Define the GPIO pin used for OneWire temperature sensors
+  
+# Individual sensors configuration
+sensor:
+  - platform: template
+    id: room1_temp
+    name: ${room1} Temperatur Regler   # Temperature controller for room1 (average value from two sensors, living room and kitchen not separated)
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    state_class: "measurement"
+    lambda: |-
+      return (id(wohnzimmer).state+id(esszimmer).state)/2;
+
+  - platform: template
+    #address: 0x04012113257CD928
+    id: room2_temp
+    name: ${room2} Temperatur Regler   # Temperature controller for room1 (average value from two sensors, living room and kitchen not separated)
+    unit_of_measurement: "°C"
+    device_class: "temperature"
+    state_class: "measurement"
+    lambda: |-
+      return (id(wohnzimmer).state+id(esszimmer).state)/2;
+  - platform: dallas_temp
+    address: 0x26012113191E5928
+    id: wohnzimmer
+    name: ${room1} Temperatur         # Dallas sensor assigned to the living room
+  - platform: dallas_temp
+    address: 0x04012113257CD928
+    id: esszimmer
+    name: ${room2} Temperatur          # Dallas sensor assigned to the kitchen/dining area
+  - platform: dallas_temp
+    address: 0xDA01211312F78E28
+    id: room3_temp
+    name: ${room3} Temperatur          # Dallas sensor for room3
+  - platform: dallas_temp
+    address: 0xB1012113270B0428
+    id: room4_temp
+    name: ${room4} Temperatur          # Dallas sensor for room4
+  - platform: dallas_temp
+    address: 0xAC0121132D4E5A28
+    id: room5_temp
+    name: ${room5} Temperatur          # Dallas sensor for room5
+  - platform: dallas_temp
+    address: 0x7501211324F9B628
+    id: room6_temp
+    name: ${room6} Temperatur          # Dallas sensor for room6
+  - platform: template
+    #address: 0xDA01211314478E28
+    id: room7_temp
+    name: ${room7} Temperatur          # Reuse sensor value for room7 (example: sharing reading from room3)
+    lambda: |-
+      return id(room3_temp).state;
+  - platform: dallas_temp
+    address: 0x220121131D1D2D28
+    name: ${devicename} Vorlauf      # Sensor measuring the supply (forward) water temperature
+  - platform: dallas_temp
+    address: 0xD60121130BD0F728
+    name: ${devicename} Rücklauf     # Sensor measuring the return water temperature

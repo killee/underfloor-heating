@@ -1,0 +1,16 @@
+wifi:
+  ssid: !secret wifi_ssid           # WiFi SSID from secrets
+  password: !secret wifi_password     # WiFi password from secrets
+
+  # Enable fallback hotspot (captive portal) in case WiFi connection fails
+  ap:
+    ssid: ${devicename}              # Hotspot name set to device name
+    password: !secret wifi_password  # Hotspot password from secrets
+
+# Enable logging for diagnostic output
+logger:
+
+# OTA updates configuration – secure over-the-air updates using a secret password
+ota:
+  platform: esphome
+  password: !secret esp_password     # OTA update password from secrets

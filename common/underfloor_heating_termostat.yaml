@@ -1,0 +1,19 @@
+heat_deadband: 0.2 °C          # Minimum temperature difference to trigger heating adjustments
+heat_overrun: 0.2 °C           # Additional tolerance to avoid rapid switching
+min_idle_time: 5min            # Shortest period the system remains idle
+min_heating_off_time: 5min     # Minimum time between heating cycles when off
+min_heating_run_time: 5min     # Minimum time the heating stays on per cycle
+#default_mode: "heat"          # Uncomment to force a default heating mode if needed
+default_preset: Home           # Default preset is 'Home'
+
+preset:
+  - name: Home
+    default_target_temperature_low: 20 °C   # Target temperature in Home preset
+  - name: Away
+    default_target_temperature_low: 18 °C   # Lower target when in Away preset
+    mode: heat                              # Heating mode override for Away
+
+visual:
+  min_temperature: 14 °C      # Minimum temperature displayed on UI
+  max_temperature: 26 °C      # Maximum temperature displayed on UI
+  temperature_step: 0.1 °C    # Increment step for temperature adjustments
